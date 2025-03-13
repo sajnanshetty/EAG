@@ -8,6 +8,10 @@
     "scripting",
     "storage"
   ],
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "<all_urls>"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -17,12 +21,13 @@
     }
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
-  "content_scripts": [
+  "web_accessible_resources": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "resources": ["test.html"],
+      "matches": ["<all_urls>"]
     }
   ],
   "icons": {
