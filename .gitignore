@@ -16,4 +16,5 @@ node_modules/
 .vscode/
 .idea/
 *.swp
-*.swo 
+*.swo Session2/config.js
+Session2/config.js

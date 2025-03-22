@@ -1,8 +1,36 @@
-document.addEventListener('DOMContentLoaded', function() {
+import { GEMINI_API_KEY } from './config.js';
+
+document.addEventListener('DOMContentLoaded', async function() {
   const summarizeButton = document.getElementById('summarize');
   const summaryDiv = document.getElementById('summary');
   const loadingDiv = document.getElementById('loading');
   const errorDiv = document.getElementById('error');
+
+  // Function to establish connection with background script
+  function connectToBackground() {
+    const port = chrome.runtime.connect({ name: "popup" });
+    
+    // Listen for messages from background script
+    port.onMessage.addListener((response) => {
+      if (response.type === 'summary') {
+        if (response.success) {
+          summaryDiv.textContent = response.summary;
+        } else {
+          errorDiv.textContent = response.error;
+          errorDiv.style.display = 'block';
+        }
+        summarizeButton.disabled = false;
+        loadingDiv.style.display = 'none';
+      }
+    });
+
+    // Handle disconnection
+    port.onDisconnect.addListener(() => {
+      console.log('Port disconnected, will reconnect when needed');
+    });
+
+    return port;
+  }
 
   summarizeButton.addEventListener('click', async function() {
     try {
@@ -24,7 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const response = await chrome.tabs.sendMessage(tab.id, { action: 'getContent' });
         if (response && response.content) {
           // Content script is already loaded and working
-          await handleContent(response.content);
+          // Create new port connection for this operation
+          const port = connectToBackground();
+          port.postMessage({
+            action: 'summarize',
+            content: response.content
+          });
           return;
         }
       } catch (error) {
@@ -47,30 +80,18 @@ document.addEventListener('DOMContentLoaded', function() {
         throw new Error('Could not extract content from the page');
       }
 
-      await handleContent(response.content);
+      // Create new port connection for this operation
+      const port = connectToBackground();
+      port.postMessage({
+        action: 'summarize',
+        content: response.content
+      });
     } catch (error) {
       console.error('Error:', error);
       errorDiv.textContent = error.message;
       errorDiv.style.display = 'block';
-    } finally {
       summarizeButton.disabled = false;
       loadingDiv.style.display = 'none';
     }
   });
-
-  // Helper function to handle content and get summary
-  async function handleContent(content) {
-    // Send message to background script for summarization
-    const summaryResponse = await chrome.runtime.sendMessage({
-      action: 'summarize',
-      content: content
-    });
-
-    if (!summaryResponse.success) {
-      throw new Error(summaryResponse.error || 'Failed to generate summary');
-    }
-
-    // Display the summary
-    summaryDiv.textContent = summaryResponse.summary;
-  }
 }); 

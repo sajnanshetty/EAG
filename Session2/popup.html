@@ -1,57 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AI Page Summarizer (Gemini)</title>
+  <title>AI Page Summarizer</title>
   <style>
     body {
       width: 400px;
-      padding: 15px;
+      padding: 10px;
       font-family: Arial, sans-serif;
     }
+    #loading {
+      display: none;
+      color: #666;
+      margin: 10px 0;
+    }
+    #error {
+      display: none;
+      color: red;
+      margin: 10px 0;
+    }
     #summary {
-      margin-top: 15px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      max-height: 300px;
-      overflow-y: auto;
+      margin-top: 10px;
       white-space: pre-wrap;
+      line-height: 1.4;
     }
     button {
-      width: 100%;
-      padding: 10px;
-      background-color: #4285f4;
+      background-color: #4CAF50;
       color: white;
+      padding: 8px 16px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 14px;
-    }
-    button:hover {
-      background-color: #357abd;
     }
     button:disabled {
-      background-color: #ccc;
+      background-color: #cccccc;
       cursor: not-allowed;
-    }
-    .loading {
-      display: none;
-      text-align: center;
-      margin: 10px 0;
-    }
-    .error {
-      color: red;
-      margin-top: 10px;
-      display: none;
     }
   </style>
 </head>
 <body>
-  <h2>AI Page Summarizer (Gemini)</h2>
   <button id="summarize">Summarize Page</button>
-  <div class="loading" id="loading">Generating summary...</div>
-  <div class="error" id="error"></div>
+  <div id="loading">Generating summary...</div>
+  <div id="error"></div>
   <div id="summary"></div>
-  <script src="popup.js"></script>
+  <script type="module" src="popup.js"></script>
 </body>
 </html> 

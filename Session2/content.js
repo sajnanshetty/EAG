@@ -4,28 +4,19 @@ function extractContent() {
   const mainContent = document.querySelector('main, article, .content, #content, .main-content, #main-content');
   
   if (mainContent) {
-    return mainContent.innerText;
+    return cleanContent(mainContent.innerText);
   }
   
   // If no main content area found, get all text content
-  const body = document.body;
-  const scripts = body.getElementsByTagName('script');
-  const styles = body.getElementsByTagName('style');
-  
-  // Remove scripts and styles
-  Array.from(scripts).forEach(script => script.remove());
-  Array.from(styles).forEach(style => style.remove());
-  
-  // Get text content
-  let content = body.innerText;
-  
-  // Clean up the content
-  content = content
+  return cleanContent(document.body.innerText);
+}
+
+// Clean up the content
+function cleanContent(content) {
+  return content
     .replace(/\s+/g, ' ')  // Replace multiple spaces with single space
     .replace(/\n+/g, '\n') // Replace multiple newlines with single newline
     .trim();              // Remove leading/trailing whitespace
-    
-  return content;
 }
 
 // Initialize content script
@@ -34,12 +25,15 @@ function initialize() {
   
   // Listen for messages from the popup
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log('Content script received message:', request);
-    
     if (request.action === 'getContent') {
       try {
         const content = extractContent();
-        console.log('Content extracted successfully');
+        
+        if (!content) {
+          sendResponse({ error: 'No content found on page' });
+          return;
+        }
+        
         sendResponse({ content });
       } catch (error) {
         console.error('Error extracting content:', error);

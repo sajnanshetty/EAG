@@ -5,8 +5,9 @@ A Chrome extension that uses Google's Gemini AI model to generate concise summar
 ## Features
 
 - One-click webpage summarization
-- Uses Google's state-of-the-art Gemini Pro model
+- Uses Google's state-of-the-art Gemini 1.5 Pro model
 - Clean and intuitive user interface
+- Secure API key storage using Chrome's built-in storage API
 - Handles various webpage formats including Canvas pages
 - Intelligent text preprocessing for better results
 - Proper error handling and user feedback
@@ -26,15 +27,26 @@ A Chrome extension that uses Google's Gemini AI model to generate concise summar
    - Create a new API key
    - Copy the key (it should start with 'AI')
 
-3. Create a `config.js` file:
-   - Copy `config.template.js` to `config.js`
-   - Replace `YOUR_API_KEY` with your Gemini API key
-
-4. Load the extension in Chrome:
+3. Load the extension in Chrome:
    - Open Chrome and go to `chrome://extensions/`
    - Enable "Developer mode" (top right)
    - Click "Load unpacked"
    - Select the `Session2` directory
+
+4. Configure your API Key:
+   - After loading the extension, click on the extension icon
+   - Click on the gear icon (⚙️) or right-click and select "Options"
+   - In the options page, paste your Gemini API key
+   - Click "Save"
+   - You'll see a confirmation message if the key is saved successfully
+
+## Security Features
+
+- API key is stored securely using Chrome's Storage Sync API
+- Key is never exposed in the source code
+- Key is synced across your Chrome instances (if sync is enabled)
+- Automatic validation of API key format
+- No sensitive data in version control
 
 ## Usage
 
@@ -52,8 +64,9 @@ Session2/
 ├── popup.js            # Popup functionality
 ├── background.js       # Background script with API logic
 ├── content.js          # Content script for page interaction
-├── config.js          # API key configuration (create this)
-├── config.template.js  # Template for config.js
+├── options.html        # API key configuration page
+├── options.js         # Options page functionality
+├── config.template.js  # Template for config module
 ├── icons/             # Extension icons
 │   ├── icon16.png
 │   ├── icon48.png
@@ -63,7 +76,7 @@ Session2/
 
 ## Technical Details
 
-- Uses the Gemini Pro model from Google AI
+- Uses the Gemini 1.5 Pro model from Google AI
 - Implements intelligent text preprocessing
 - Features advanced summarization parameters:
   - Temperature: 0.7 for balanced creativity
@@ -74,13 +87,14 @@ Session2/
 - Proper error handling and timeouts
 - Clean text formatting with proper paragraph breaks
 
-## Security Notes
+## Security Best Practices
 
-- The Gemini API key is stored locally in `config.js`
-- Never commit your `config.js` file to version control
-- The extension only requests necessary permissions
+- Never commit API keys to version control
+- Use the options page to manage your API key
+- API key is stored securely in Chrome's storage
 - All communication is done over HTTPS
 - Content safety filters are enabled by default
+- Regular validation of API key format
 
 ## Development
 
@@ -88,14 +102,23 @@ To modify the extension:
 1. Make your changes
 2. Reload the extension in `chrome://extensions/`
 3. Test the changes
+4. If modifying API key storage:
+   - Update the options page UI if needed
+   - Use Chrome's storage API for secure storage
+   - Test sync functionality across devices
 
 ## Troubleshooting
 
 If you encounter issues:
 1. Check the console for detailed error messages
-2. Verify your API key is correct
+2. Verify your API key is correctly set in the options page
 3. Make sure you're connected to the internet
 4. Try reloading the extension
+5. If API key issues:
+   - Open the options page
+   - Verify the key starts with 'AI'
+   - Re-enter and save the key
+   - Check the success/error messages
 
 ## License
 
