@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="#4285f4"/>
+  
+  <!-- Document shape -->
+  <path d="M40 30h48v68H40z" fill="white"/>
+  <path d="M40 30h48v8H40z" fill="#e8eaed"/>
+  
+  <!-- Text lines -->
+  <rect x="45" y="45" width="38" height="4" rx="2" fill="#4285f4"/>
+  <rect x="45" y="55" width="38" height="4" rx="2" fill="#4285f4"/>
+  <rect x="45" y="65" width="38" height="4" rx="2" fill="#4285f4"/>
+  
+  <!-- Sparkle -->
+  <path d="M85 35l-5 10-10 5 10 5 5 10 5-10 10-5-10-5z" fill="#fbbc05"/>
+</svg> 
