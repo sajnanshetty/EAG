@@ -1,0 +1,258 @@
+# Environment and Configuration
+.env
+.venv
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Project-specific files
+# Session data and memory
+memory/session_summaries_index/
+memory/temp.json
+memory/*.json
+memory/*.html
+
+# Generated media files
+media/generated/
+media/pdf/
+media/*.pdf
+media/*.png
+media/*.jpg
+media/*.jpeg
+media/*.gif
+media/*.mp4
+media/*.avi
+media/*.mov
+
+# Debug and test files
+debug_*.py
+test_*.py
+*_test.py
+*_debug.py
+
+# Log files
+*.log
+logs/
+log/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# API keys and secrets
+*_key.txt
+*_secret.txt
+secrets.json
+keys.json
+api_keys.json
+
+# MCP server specific
+mcp_servers/faiss_index/
+mcp_servers/documents/
+mcp_servers/__pycache__/
+
+# Browser MCP specific
+browserMCP/__pycache__/
+browserMCP/*.log
+
+# Agent Loop specific
+agentLoop/__pycache__/
+
+# Action specific
+action/__pycache__/
+action/sandbox_state/
+
+# Utils specific
+utils/__pycache__/
+
+# Heuristics specific
+heuristics/__pycache__/
+
+# Prompts specific (if you want to exclude prompt variations)
+# prompts/*_backup.txt
+# prompts/*_old.txt
+
+# Configuration backups
+config/*.backup
+config/*.old
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+*.lnk
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# Backup files
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+
+# Lock files (optional - some teams prefer to commit these)
+# uv.lock
+# package-lock.json
+# yarn.lock
+
+# Large files that shouldn't be in git
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.iso
+*.dmg
+
+# AI/ML specific
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.model
+*.weights
+*.bin
+*.onnx
+*.tflite
+
+# Documentation builds
+docs/_build/
+docs/build/
+
+# Local development
+local_config.py
+local_settings.py
+settings_local.py 
