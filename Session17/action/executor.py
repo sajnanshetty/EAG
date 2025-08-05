@@ -28,6 +28,19 @@ SAFE_BUILTINS = {
     }
 }
 
+# Add additional safe modules
+try:
+    import requests
+    SAFE_BUILTINS['requests'] = requests
+except ImportError:
+    pass
+
+try:
+    import urllib.request
+    SAFE_BUILTINS['urllib'] = urllib
+except ImportError:
+    pass
+
 def log_step(message, symbol="🔧"):
     """Simple logging with timestamp"""
     timestamp = datetime.now().strftime("%H:%M:%S")
@@ -168,59 +181,36 @@ async def execute_python_code_variant(code: str, multi_mcp, session_id: str, inp
         safe_globals.update(inputs)
     
     try:
-        # Handle async execution properly
-        
-        # Parse and transform code to handle async tool calls
-        tree = ast.parse(code)
-        
-        # Create async wrapper function
-        func_body = tree.body
-        
-        # 🚨 FIX: Add return statement for 'output' variable
-        return_stmt = ast.Return(value=ast.Name(id='output', ctx=ast.Load()))
-        func_body.append(return_stmt)
-        
-        async_func = ast.AsyncFunctionDef(
-            name='__async_exec',
-            args=ast.arguments(
-                args=[], defaults=[], kwonlyargs=[], 
-                kw_defaults=[], posonlyargs=[], vararg=None, kwarg=None
-            ),
-            body=func_body,
-            decorator_list=[],
-            returns=None
-        )
-        
-        # Transform tool calls to be awaited
-        class AwaitTransformer(ast.NodeTransformer):
-            def visit_Call(self, node):
-                self.generic_visit(node)
-                if isinstance(node.func, ast.Name) and node.func.id in tool_funcs:
-                    return ast.Await(value=node)
-                return node
-        
-        async_func = AwaitTransformer().visit(async_func)
-        
-        # Create module with async function
-        module = ast.Module(body=[async_func], type_ignores=[])
-        ast.fix_missing_locations(module)
-        
-        # Compile and execute
-        compiled = compile(module, '<string>', 'exec')
+        # 🚨 FIXED: Handle async execution properly
+        # Create a local namespace for execution
         local_vars = {}
-        exec(compiled, safe_globals, local_vars)
         
-        # Execute the async function
-        result = await local_vars['__async_exec']()
+        # Execute the code
+        exec(code, safe_globals, local_vars)
+        
+        # 🚨 NEW: Handle async results - await any coroutines in the output
+        result = None
+        if 'output' in local_vars:
+            result = local_vars['output']
+        else:
+            # Fallback: collect all non-private variables
+            result = {k: v for k, v in local_vars.items() if not k.startswith('__')}
+        
+        # Check if result contains coroutines and await them
+        if isinstance(result, dict):
+            for key, value in result.items():
+                if asyncio.iscoroutine(value):
+                    result[key] = await value
+                elif isinstance(value, dict):
+                    # Recursively check nested dictionaries
+                    for nested_key, nested_value in value.items():
+                        if asyncio.iscoroutine(nested_value):
+                            value[nested_key] = await nested_value
         
         # Find created files
         created_files = []
         if output_dir.exists():
             created_files = [str(f) for f in output_dir.iterdir() if f.is_file()]
-        
-        # Extract result
-        if result is None:
-            result = {k: v for k, v in local_vars.items() if not k.startswith('__')}
         
         # 🚨 DEBUG: Print code execution result
         print(f"\n🚨 CODE EXECUTION RESULT:")
